@@ -34,9 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http
 		.authorizeHttpRequests()
+		.antMatchers(HttpMethod.GET, "/api/auth/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
 		.antMatchers(HttpMethod.GET, "/product/*").permitAll()
 		.antMatchers(HttpMethod.GET, "/products").hasAuthority(Constants.Role_Authority.ADMIN.getRole())
+		// FOR Swagger
+		.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+		.antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/v3/api-docs.yaml").permitAll()
 		.antMatchers(HttpMethod.POST, "/products").authenticated()
 		.anyRequest().authenticated()
 		.and()

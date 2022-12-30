@@ -47,7 +47,7 @@ public class JWTServiceImpl implements JWTService {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MINUTE, 5);
+		calendar.add(Calendar.MINUTE, 20);
 
 		Claims claims = Jwts.claims();
 		claims.put("user", UUID.randomUUID().toString().replaceAll("-", ""));
