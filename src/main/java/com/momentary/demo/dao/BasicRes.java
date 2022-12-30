@@ -1,9 +1,15 @@
 package com.momentary.demo.dao;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class BasicRes {
-	
+	@Schema(description = "回傳的狀態")
 	String code;
+	
+	@Schema(description = "回傳的訊息")
 	String msg;
+	
+	@Schema(description = "回傳的資訊")
 	Object data;
 	
 	public BasicRes() {};

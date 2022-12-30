@@ -24,6 +24,7 @@ import com.momentary.demo.service.auth.DemoUserDetailService;
 import com.momentary.demo.service.auth.JWTService;
 
 import io.jsonwebtoken.lang.Objects;
+import io.swagger.v3.oas.annotations.Hidden;
 
 
 @RestController
@@ -43,6 +44,7 @@ public class AuthController {
 		return ResponseEntity.ok().body(token);
 	}
 	
+	@Hidden
 	@GetMapping(value = "/parserToken")
 	public ResponseEntity<Map<Object, Object>> parserToken(HttpServletRequest http, @RequestParam("token") String token) throws Exception {
 		
