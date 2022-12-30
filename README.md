@@ -14,3 +14,8 @@
 * 加入Swagger
 
 > [參考【Spring Boot】網站](https://chikuwa-tech-study.blogspot.com/2021/05/spring-boot-create-project.html)
+
+## Swagger UI 
+
+*[Link](http://127.0.0.1:8080/swagger-ui/index.html#/)*
+![Swagger UI](https://user-images.githubusercontent.com/32361332/210053877-79dc7564-3838-47d7-957a-ca4e7670664a.png)
