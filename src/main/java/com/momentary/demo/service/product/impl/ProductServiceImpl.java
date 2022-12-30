@@ -10,11 +10,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.momentary.demo.annotation.SendMessage;
+import com.momentary.demo.constant.ActionType;
+import com.momentary.demo.constant.EntityType;
 import com.momentary.demo.dao.product.ProductDao;
 import com.momentary.demo.model.product.Product;
 import com.momentary.demo.model.product.ProductReq;
+import com.momentary.demo.service.auth.UserIdentityService;
 import com.momentary.demo.service.product.ProductService;
 import com.momentary.demo.util.ExceptionUtils;
+
+import io.jsonwebtoken.lang.Strings;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,6 +28,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	ProductDao productDao;
+	
+	@Autowired
+	UserIdentityService userIdentityService;
 	
 	@Override
 	public Product getProduct(String id) throws Exception {
@@ -32,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
 				throw new Exception("Id is empty");
 			}
 			product = productDao.getProduct(id);
+			logger.info(String.format("\"=================== getProduct Accessed By %s===================\"", userIdentityService.getUsername()));
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error(ExceptionUtils.getStackTrace(e));
@@ -43,12 +53,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@SendMessage(entityType = EntityType.PRODUCT, actionType = ActionType.QUERY)
 	public List<Product> getProducts() throws Exception{
 		// TODO Auto-generated method stub
 		logger.info("=================== Start get Products ===================");
 		List<Product> prodcutsList = null;
 		try {
 			prodcutsList = productDao.getProducts();
+			logger.info(String.format("\"=================== getProduct Accessed By %s===================\"", userIdentityService.getUsername()));
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
 		} finally {
@@ -69,7 +81,6 @@ public class ProductServiceImpl implements ProductService {
 			Objects.requireNonNull(newId);
 
 			return productDao.newProduct( new Product(newId, req.getName(), req.getPrice()));
-			
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
 		} finally {

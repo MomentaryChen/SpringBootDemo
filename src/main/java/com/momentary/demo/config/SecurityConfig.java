@@ -2,6 +2,8 @@ package com.momentary.demo.config;
 
 import java.lang.invoke.ConstantCallSite;
 
+import javax.servlet.Filter;
+
 import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +13,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserAuthorityChanger;
 
 import com.momentary.demo.constant.Constants;
 import com.momentary.demo.service.auth.DemoUserDetailService;
+import com.momentary.demo.filter.DemoAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -30,18 +35,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 		.authorizeHttpRequests()
 		.antMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
-//		.antMatchers(HttpMethod.GET, "/products").hasAuthority(Constants.RoleAuthority.ADMIN.getRole())
-		.antMatchers(HttpMethod.GET, "/products/*").authenticated()
+		.antMatchers(HttpMethod.GET, "/product/*").permitAll()
+		.antMatchers(HttpMethod.GET, "/products").hasAuthority(Constants.Role_Authority.ADMIN.getRole())
 		.antMatchers(HttpMethod.POST, "/products").authenticated()
-//		.anyRequest().authenticated()
+		.anyRequest().authenticated()
+		.and()
+		.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 		.csrf().disable();
 		
-//		http.addFilterBefore(authenticationManagerBean(), AuthenticationFilter.class);
 		http.headers().cacheControl();
 	}
 	
-	@Override
+	
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth
 			.userDetailsService(detailService)
@@ -51,6 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public Filter authenticationTokenFilterBean() throws Exception {
+		return new DemoAuthenticationFilter();
 	}
 	
 	@Override

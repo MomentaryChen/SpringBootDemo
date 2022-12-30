@@ -13,7 +13,6 @@ public class User implements UserDetails{
 	String username;
 	String password;
 	Collection<? extends GrantedAuthority> authorities;
-	
 
 	public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super();

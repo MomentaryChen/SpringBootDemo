@@ -8,6 +8,7 @@ class SpringbootDemoApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println(String.format("\"=================== getProduct Accessed By %s===================\"", "name"));
 	}
 
 }

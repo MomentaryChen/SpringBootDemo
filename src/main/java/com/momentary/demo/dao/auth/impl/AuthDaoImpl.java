@@ -11,10 +11,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import com.momentary.demo.constant.Constants;
 import com.momentary.demo.dao.auth.AuthDao;
 import com.momentary.demo.model.auth.User;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.apache.logging.log4j.LogManager;
 
 @Repository
@@ -26,7 +28,9 @@ public class AuthDaoImpl implements AuthDao {
 	public AuthDaoImpl() {
 		
 		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("User"));
+		authorities.add(new SimpleGrantedAuthority(Constants.Role_Authority.USER.getRole()));
+		authorities.add(new SimpleGrantedAuthority(Constants.Role_Authority.ADMIN.getRole()));
+		
 		
 		users.add(new User("victor", "$2a$12$WsO1/lCJR35FdQpLBoFE/.hfoaX2RzRs3Q2icuv2fX90B28aTDkGi", authorities));
 		users.add(new User("joe", "$2a$12$WsO1/lCJR35FdQpLBoFE/.hfoaX2RzRs3Q2icuv2fX90B28aTDkGi", authorities));

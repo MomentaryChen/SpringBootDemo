@@ -29,13 +29,14 @@ public class Constants {
 		}
 	}
 	
-	public enum RoleAuthority{
+	public enum Role_Authority{
 		ADMIN("admin"),
-		USER("user");
+		USER("user"),
+		ANONYMOUS("anonymous");
 		
 		private final String role;
 
-		private RoleAuthority(String role) {
+		private Role_Authority(String role) {
 			this.role = role;
 		}
 
